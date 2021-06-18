@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn,DeleteDateColumn} from "typeorm";
 
 @Entity()
 export class Movie {
@@ -10,4 +10,13 @@ export class Movie {
 
     @Column()
     age: number;
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 }
