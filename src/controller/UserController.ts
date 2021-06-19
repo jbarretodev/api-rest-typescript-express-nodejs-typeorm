@@ -1,10 +1,12 @@
 import {getRepository} from "typeorm"
 import {User} from "../entity/User"
 import {sendMailWelcome} from "../utils/utils";
+import {Movie} from "../entity/Movie";
 
 export class UserController {
 
     private userRepository = getRepository(User);
+    private movieRepository = getRepository(Movie);
 
     async all() {
         const users = await this.userRepository.find({ relations: ["movies"] })
@@ -46,5 +48,13 @@ export class UserController {
             return { statusCode:404,data:[] }
 
         return (await this.userRepository.update(id,params)) ? { statusCode:200,data:true } : { statusCode:400,data:'error updating user' }
+    }
+
+    async setMovieAsFavorite(movieId:number,userId:number){
+        const user = await this.userRepository.findOne(userId)
+        const movie = await this.movieRepository.findOne(movieId, { relations: ["users"] });
+        movie.users.push(user)
+        await this.movieRepository.save(movie)
+        return { statusCode:200,data:true }
     }
 }

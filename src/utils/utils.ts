@@ -2,11 +2,8 @@ const jwt = require('jsonwebtoken')
 var nodemailer = require('nodemailer');
 
 export const decodeToken = (token) => {
-    try{
-        return jwt.verify(token,'someString')
-    }catch (e) {
-        return undefined
-    }
+    let srtToken = token.split(' ').pop()
+    return jwt.verify(srtToken,'someString')
 }
 
 
