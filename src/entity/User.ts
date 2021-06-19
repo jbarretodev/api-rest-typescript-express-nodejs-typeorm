@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column,CreateDateColumn,UpdateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column,CreateDateColumn,UpdateDateColumn,ManyToMany,JoinTable} from "typeorm";
+import {Movie} from "./Movie";
 
 @Entity()
 export class User {
@@ -31,4 +32,7 @@ export class User {
     @UpdateDateColumn()
     updated_at: Date;
 
+    @ManyToMany(() => Movie, movie => movie.users)
+    @JoinTable()
+    movies: Movie[];
 }

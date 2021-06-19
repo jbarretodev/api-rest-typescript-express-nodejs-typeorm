@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn,ManyToMany} from "typeorm";
+import {Movie} from "./Movie";
 
 @Entity()
 export class Actor {
@@ -22,4 +23,8 @@ export class Actor {
 
     @DeleteDateColumn()
     deleted_at: Date;
+
+    @ManyToMany(() => Movie, movie => movie.actors)
+    movies: Movie[];
+
 }

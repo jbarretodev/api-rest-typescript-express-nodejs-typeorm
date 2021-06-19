@@ -6,7 +6,7 @@ export class UserController {
     private userRepository = getRepository(User);
 
     async all() {
-        const users = await this.userRepository.find()
+        const users = await this.userRepository.find({ relations: ["movies"] })
         return users.length > 0 ? { statusCode:200,data:users } : { statusCode:404,data:[] }
     }
 
