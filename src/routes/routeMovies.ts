@@ -52,6 +52,13 @@ middlewareAuth.put('/movies/:id',async (req:Request,res:Response) => {
     return res.json(rs.data)
 })
 
+middlewareAuth.put('/movies/:id/assign-category',async (req:Request,res:Response) => {
+    const controllerMovie = new MovieController()
+    const rs = await controllerMovie.assignCategoryToMovie(parseInt(req.params.id),parseInt(req.body.categoryId))
+    res.statusCode = rs.statusCode
+    return res.json(rs.data)
+})
+
 middlewareAuth.post('/assign-actor-movie',async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const rs = await controllerMovie.actorToMovie(parseInt(req.body.movieId),parseInt(req.body.actorId))

@@ -43,10 +43,9 @@ route.get('/users/:id',async (req:Request,res:Response) => {
     return res.json(rs.data)
 })
 
-middlewareAuth.delete('/users',async (req:Request,res:Response) => {
+middlewareAuth.delete('/users/:id',async (req:Request,res:Response) => {
     const userController = new UserController()
-    const tokenDecoded = decodeToken(req.header('authorization'))
-    const rs = await userController.remove(parseInt(tokenDecoded.id))
+    const rs = await userController.remove(parseInt(req.params.id))
     res.statusCode = rs.statusCode
     return res.json(rs.data)
 })

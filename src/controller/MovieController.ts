@@ -1,14 +1,16 @@
 import {getRepository} from "typeorm";
 import {Movie} from "../entity/Movie";
 import {Actor} from "../entity/Actor";
+import {Category} from "../entity/Category";
 
 
 export class MovieController{
     private movieRepository = getRepository(Movie);
     private actorRepository = getRepository(Actor);
+    private categoryRepository = getRepository(Category);
 
     async getAllMovies(){
-        const rs = await this.movieRepository.find();
+        const rs = await this.movieRepository.find({relations:['category']});
         return (rs) ? { statusCode:200,data:rs } : { statusCode: 400,data:[] }
     }
 
@@ -55,6 +57,19 @@ export class MovieController{
         if( !actor ) return { statusCode:404,data:'actor not found' }
 
         movie.actors.push(actor)
+        await this.movieRepository.save(movie)
+
+        return { statusCode:200,data:true }
+    }
+
+    async assignCategoryToMovie(movieId:number,categoryId){
+        const movie = await this.movieRepository.findOne(movieId,{relations:['category']})
+        const category = await this.categoryRepository.findOne(categoryId)
+
+        if(!movie) return {statusCode:404,data:'movie not found'}
+        if(!category) return {statusCode:404,data:'category not found'}
+
+        movie.category = category
         await this.movieRepository.save(movie)
 
         return { statusCode:200,data:true }
