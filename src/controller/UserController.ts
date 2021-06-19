@@ -1,6 +1,6 @@
 import {getRepository} from "typeorm"
 import {User} from "../entity/User"
-import {sendMailWelcome} from "../utils/utils";
+import {removeMovieFromList, sendMailWelcome} from "../utils/utils";
 import {Movie} from "../entity/Movie";
 
 export class UserController {
@@ -55,6 +55,26 @@ export class UserController {
         const movie = await this.movieRepository.findOne(movieId, { relations: ["users"] });
         movie.users.push(user)
         await this.movieRepository.save(movie)
+        return { statusCode:200,data:true }
+    }
+
+    async getMyFavoriteMovies(id:number){
+        const user = await this.userRepository.findOne(id,{ relations: ["movies"] })
+
+        return user.movies.length > 0 ? { statusCode:200,data:user.movies } : { statusCode:404,data:[] }
+    }
+
+    async removeMovie(userId,movieId:number){
+        const user = await this.userRepository.findOne(userId,{ relations: ["movies"] })
+
+        if(!user || user.movies.length <= 0) return { statusCode:400,data:'error no movies' }
+
+        if(!user.movies.some(movie => movie.id === movieId)) return { statusCode:404,data:'error, no movies with that id' }
+
+        user.movies = removeMovieFromList(user.movies,movieId)
+
+        await this.userRepository.save(user)
+
         return { statusCode:200,data:true }
     }
 }

@@ -1,13 +1,29 @@
+import {Movie} from "../entity/Movie";
+
 const jwt = require('jsonwebtoken')
 var nodemailer = require('nodemailer');
 
-export const decodeToken = (token) => {
-    let srtToken = token.split(' ').pop()
-    return jwt.verify(srtToken,'someString')
+export const decodeToken = (token:string) => {
+    try{
+        let srtToken = token.split(' ').pop()
+        return jwt.verify(srtToken,'someString')
+    }catch (e) {
+        return undefined
+    }
 }
 
+export const removeMovieFromList = (movies:Array<Movie>,movieToRemove:number) => {
+    var newListMovie:Array<Movie> = [];
 
-export const sendMailWelcome = (emailTo) => {
+    for(let movie of movies){
+       if(movie.id !== movieToRemove)
+           newListMovie.push(movie)
+    }
+
+    return newListMovie
+}
+
+export const sendMailWelcome = (emailTo:string) => {
     let transport = nodemailer.createTransport({
         host: "smtp.mailtrap.io",
         port: 2525,

@@ -7,21 +7,24 @@ import {routeUser} from "./routes/routerUser"
 import {routeAuth} from "./routes/routeAuth"
 import {routeActor} from "./routes/routeActor";
 import {routerCategory} from "./routes/routeCategory";
+const listEndpoints = require('express-list-endpoints')
 
-createConnection().then(async connection => {
-    // create express app
-    const app: express.Express = express()
-    app.use(bodyParser.json());
+createConnection()
+    .then(async connection => {
+        const app: express.Express = express()
+        app.use(bodyParser.json());
 
-    app.use(routerMovies)
-    app.use(routeUser)
-    app.use(routeAuth)
-    app.use(routeActor)
-    app.use(routerCategory)
+        app.use(routerMovies)
+        app.use(routeUser)
+        app.use(routeAuth)
+        app.use(routeActor)
+        app.use(routerCategory)
 
-    // start express server
-    app.listen(3000,'localhost');
+        app.listen(3000,'localhost');
 
-    console.log("Express server has started on port 3000. Open http://localhost:3000/ to see results");
+        console.log("Api Running in PORT 3000 and IP \"localhost\" 😎💫🚀");
 
-}).catch(error => console.log(error));
+        console.log(listEndpoints(app),`Cantidad de endpoints: ${listEndpoints(app).length}`);
+
+    })
+    .catch(error => console.log(error));

@@ -10,6 +10,13 @@ route.get('/',(req:Request,res:Response) => {
     return res.json('api running')
 })
 
+route.get('/movies/users-favorites',async (req:Request,res:Response) => {
+    const controllerMovie = new MovieController()
+    const rs = await controllerMovie.getMoviesWithUsers()
+    res.statusCode = rs.statusCode
+    return res.json(rs.data)
+})
+
 route.get('/movies', async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const movies = await controllerMovie.getAllMovies()
@@ -41,6 +48,13 @@ middlewareAuth.delete('/movies/:id',async (req:Request,res:Response) => {
 middlewareAuth.put('/movies/:id',async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const rs = await controllerMovie.updateMovie(parseInt(req.params.id),req.body)
+    res.statusCode = rs.statusCode
+    return res.json(rs.data)
+})
+
+middlewareAuth.post('/assign-actor-movie',async (req:Request,res:Response) => {
+    const controllerMovie = new MovieController()
+    const rs = await controllerMovie.actorToMovie(parseInt(req.body.movieId),parseInt(req.body.actorId))
     res.statusCode = rs.statusCode
     return res.json(rs.data)
 })

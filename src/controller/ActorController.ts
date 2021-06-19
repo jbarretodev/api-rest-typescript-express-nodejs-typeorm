@@ -38,4 +38,10 @@ export class ActorController{
 
         return (await this.actorRepository.remove(actor)) ? { statusCode:200,data:true } : { statusCode:400,data:'error deleting users' }
     }
+
+    async actorMovie(){
+        const actors = await this.actorRepository.find({relations:['movies']})
+
+        return actors.length > 0 ? { statusCode:200,data:actors } : { statusCode:404,data:[] }
+    }
 }

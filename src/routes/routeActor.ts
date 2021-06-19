@@ -13,6 +13,13 @@ route.get('/actors',async (req:Request,res:Response) => {
     return res.json(rs.data)
 })
 
+route.get('/actors/movies',async (req:Request,res:Response) => {
+    const actorController = new ActorController()
+    const rs = await actorController.actorMovie()
+    res.statusCode = rs.statusCode
+    return res.json(rs.data)
+})
+
 route.get('/actors/:id',async (req:Request,res:Response) => {
     const actorController = new ActorController()
     const rs = await actorController.getOneActor(parseInt(req.params.id))
