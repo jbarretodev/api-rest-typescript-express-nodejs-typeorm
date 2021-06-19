@@ -34,7 +34,7 @@ middlewareAuth.delete('/users/:id',async (req:Request,res:Response) => {
     return res.json(rs.data)
 })
 
-middlewareAuth.patch('/users/:id',async (req:Request,res:Response) => {
+middlewareAuth.put('/users/:id',async (req:Request,res:Response) => {
     const userController = new UserController()
     const rs = await userController.update(parseInt(req.params.id),req.body)
     res.statusCode = rs.statusCode
