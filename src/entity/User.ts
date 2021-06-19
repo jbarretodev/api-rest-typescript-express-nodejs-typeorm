@@ -6,6 +6,11 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({
+        unique:true,
+    })
+    email:string
+
     @Column()
     firstName: string;
 
@@ -15,7 +20,9 @@ export class User {
     @Column()
     age: number;
 
-    @Column()
+    @Column({
+        select:false
+    })
     password:string;
 
     @CreateDateColumn()

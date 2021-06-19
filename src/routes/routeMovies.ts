@@ -1,7 +1,9 @@
 import { Request, Router, Response } from 'express'
 import {MovieController} from "../controller/MovieController"
+import {withJWTAuthMiddleware} from "express-kun";
 
 const route: Router = Router()
+const middlewareAuth = withJWTAuthMiddleware(route,'someString')
 
 
 route.get('/',(req:Request,res:Response) => {
@@ -22,21 +24,21 @@ route.get('/movies/:id',async(req:Request,res:Response) => {
     return res.json(rs.data)
 })
 
-route.post('/movies',async (req:Request,res:Response) => {
+middlewareAuth.post('/movies',async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const rs = await controllerMovie.storeMovie(req.body)
     res.statusCode = rs.statusCode
     return res.json(rs.data)
 })
 
-route.delete('/movies/:id',async (req:Request,res:Response) => {
+middlewareAuth.delete('/movies/:id',async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const rs = await controllerMovie.deleteMovie(parseInt(req.params.id))
     res.statusCode = rs.statusCode
     return res.json(rs.data)
 })
 
-route.put('/movies/:id',async (req:Request,res:Response) => {
+middlewareAuth.put('/movies/:id',async (req:Request,res:Response) => {
     const controllerMovie = new MovieController()
     const rs = await controllerMovie.updateMovie(parseInt(req.params.id),req.body)
     res.statusCode = rs.statusCode

@@ -1,8 +1,10 @@
-import "reflect-metadata";
-import {createConnection} from "typeorm";
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import {routerMovies} from "./routes/routeMovies";
+import "reflect-metadata"
+import {createConnection} from "typeorm"
+import * as express from "express"
+import * as bodyParser from "body-parser"
+import {routerMovies} from "./routes/routeMovies"
+import {routeUser} from "./routes/routerUser"
+import {routeAuth} from "./routes/routeAuth"
 
 createConnection().then(async connection => {
     // create express app
@@ -10,6 +12,8 @@ createConnection().then(async connection => {
     app.use(bodyParser.json());
 
     app.use(routerMovies)
+    app.use(routeUser)
+    app.use(routeAuth)
 
     // start express server
     app.listen(3000,'localhost');
