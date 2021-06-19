@@ -6,7 +6,7 @@ const route: Router = Router()
 
 const middlewareAuth = withJWTAuthMiddleware(route,'someString')
 
-middlewareAuth.post('/users',async (req:Request,res:Response) => {
+route.post('/users',async (req:Request,res:Response) => {
     const userController = new UserController()
     const rs = await userController.save(req.body)
     res.statusCode = rs.statusCode

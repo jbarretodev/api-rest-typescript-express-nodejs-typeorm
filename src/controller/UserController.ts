@@ -1,5 +1,6 @@
 import {getRepository} from "typeorm"
 import {User} from "../entity/User"
+import {sendMailWelcome} from "../utils/utils";
 
 export class UserController {
 
@@ -19,7 +20,11 @@ export class UserController {
     async save(params:any) {
         try{
             const user  = await this.userRepository.save(params);
-            return (user) ? { statusCode:201,data:user } : { statusCode:400,data:'error savig user' }
+            if(user){
+                sendMailWelcome(user.email)
+                return { statusCode:201,data:user }
+            }
+            return { statusCode:400,data:'error savig user' }
         }catch (e) {
             return { statusCode:500,data:e.message }
         }
